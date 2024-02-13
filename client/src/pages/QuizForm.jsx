@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import QuestionForm from "../components/QuestionForm.jsx";
 import io from "socket.io-client";
-import authService from "../utils/auth"; // Adjust the path as per your structure
-
-const socket = io("http://localhost:3000");
+import authService from "../utils/auth";
+const socket = io("http://localhost:3001");
 
 const QuizForm = () => {
   const [title, setTitle] = useState("");
@@ -36,14 +35,23 @@ const QuizForm = () => {
   };
 
   const submitQuiz = () => {
-    // Use authService to get the current user's profile which includes the ID
-    const userProfile = authService.getProfile();
+    if (!authService.loggedIn()) {
+      alert("YOU MUST BE LOGGED IN TO CREATE QUIZ.");
+      return;
+    }
+    const token = authService.getToken();
+    const userProfile = authService.getProfile(); // This gets the user's profile
     const quizData = {
       title,
       questions,
-      hostId: userProfile._id, // Use the _id from the user's profile as the hostId
+      createdBy: userProfile._id, // Correctly use _id from userProfile
     };
-    socket.emit("newQuiz", quizData);
+    const isValidQuiz = questions.every((q) => q.question.trim() !== "");
+    if (!isValidQuiz) {
+      alert("Every question must have text.");
+      return; // Prevent submission
+    }
+    socket.emit("newQuiz", { token, quizData });
     setTitle("");
     setQuestions([]);
   };
