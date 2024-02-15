@@ -1,6 +1,5 @@
 import express from "express";
 import helmet from "helmet";
-import { createServer } from "http";
 import { ApolloServer } from "apollo-server-express";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -20,8 +19,6 @@ import { authMiddleware } from "./utils/auth.js";
     const PORT = process.env.PORT || 3001;
     app.use(express.urlencoded({ extended: false }));
     app.use(express.json());
-
-    app.use(cors());
 
     app.use(
       helmet.contentSecurityPolicy({
@@ -62,12 +59,12 @@ import { authMiddleware } from "./utils/auth.js";
     await apolloServer.start();
     apolloServer.applyMiddleware({ app });
 
-    const httpServer = createServer(app);
+    /*  const httpServer = createServer(app); */
     // initializeSocketIo(httpServer);
     // const profile = new Profile();
     // const game = new Game();
     // const quiz = new Quiz();
-    httpServer.listen(PORT, () => {
+    app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
       console.log(
         `GraphQL here: http://localhost:${PORT}${apolloServer.graphqlPath}`,
