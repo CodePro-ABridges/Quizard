@@ -20,24 +20,24 @@ import { authMiddleware } from "./utils/auth.js";
     app.use(express.urlencoded({ extended: false }));
     app.use(express.json());
 
-    app.use(
-      helmet.contentSecurityPolicy({
-        directives: {
-          defaultSrc: ["'self'"],
-          scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-          styleSrc: [
-            "'self'",
-            "https://*.googleapis.com",
-            "'unsafe-inline'",
-            "https://cdn.jsdelivr.net",
-          ],
-          fontSrc: ["'self'", "*"],
-          imgSrc: ["'self'", "*"],
-          connectSrc: ["'self'", "*"],
-        },
-        reportOnly: false,
-      }),
-    );
+    // app.use(
+    //   helmet.contentSecurityPolicy({
+    //     directives: {
+    //       defaultSrc: ["'self'"],
+    //       scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+    //       styleSrc: [
+    //         "'self'",
+    //         "https://*.googleapis.com",
+    //         "'unsafe-inline'",
+    //         "https://cdn.jsdelivr.net",
+    //       ],
+    //       fontSrc: ["'self'", "*"],
+    //       imgSrc: ["'self'", "*"],
+    //       connectSrc: ["'self'", "*"],
+    //     },
+    //     reportOnly: false,
+    //   }),
+    // );
 
     app.use("/static", express.static(path.join(__dirname, "..", "client")));
     app.get("*", (req, res) => {
