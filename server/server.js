@@ -44,10 +44,10 @@ import { authMiddleware } from "./utils/auth.js";
 
     app.use(
       "/static",
-      express.static(path.join(__dirname, "..", "client", "build")),
+      express.static(path.join(__dirname, "..", "client", "dist")),
     );
     app.get("*", (req, res) => {
-      res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
+      res.sendFile(path.join(__dirname, "..", "client", "dist", "index.html"));
     });
 
     await db();
